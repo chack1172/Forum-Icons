@@ -5,7 +5,7 @@ Author: [chack1172](http://en.chack1172.altervista.org)
 Forum Icons is a plugin that allows you to add an icon to each forum on your MyBB's copy.
 
 ### Installation
-1. Upload contents of the folder Upload to your board directory
+1. Upload contents of the folder 'src' to your board directory
 2. Go to `ACP > Plugins > Install & Activate 'Forum Icons'`
 
 ### Managemant
