@@ -109,6 +109,12 @@ function ficons_activate() {
         "#" . preg_quote('{$forum[\'name\']}') . "#i",
         '{$forum[\'icon\']}{$forum[\'name\']}'
     );
+
+    find_replace_templatesets(
+        "forumbit_depth2_cat",
+        "#" . preg_quote('{$forum[\'name\']}') . "#i",
+        '{$forum[\'icon\']}{$forum[\'name\']}'
+    );
 }
 
 function ficons_deactivate() {
@@ -116,6 +122,12 @@ function ficons_deactivate() {
     
     find_replace_templatesets(
         "forumbit_depth2_forum",
+        "#" . preg_quote('{$forum[\'icon\']}') . "#i",
+        ''
+    );
+
+    find_replace_templatesets(
+        "forumbit_depth2_cat",
         "#" . preg_quote('{$forum[\'icon\']}') . "#i",
         ''
     );

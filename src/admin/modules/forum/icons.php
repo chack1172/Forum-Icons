@@ -93,14 +93,14 @@ function build_forums_list($form_container, $pid=0, $depth=1) {
             $image = $db->fetch_array($image);
 			$forum['name'] = preg_replace("#&(?!\#[0-9]+;)#si", "&amp;", $forum['name']);
 
-			if($forum['type'] == "c" && ($depth == 1 || $depth == 2)) {
+			if($forum['type'] == "c" && $depth == 1) {
 				$form_container->output_cell("<div style=\"padding-left: ".(40*($depth-1))."px;\"><strong>{$forum['name']}</strong></div>", array("colspan" => "3", "style" => "height:33px"));
                 $form_container->construct_row();
 
 				if($forums_by_parent[$forum['fid']])
 					build_forums_list($form_container, $forum['fid'], $depth+1);
 			}
-			elseif($forum['type'] == "f") {
+			else {
                 $form_container->output_cell("<div style=\"padding-left: ".(40*($depth-1))."px;\">{$forum['name']}</div>");
                 $form_container->output_cell($form->generate_text_box("image[{$forum['fid']}]", $image['image'], array("class" => "imageurl")), array("class" => "align_center"));
                 $form_container->output_cell("<img class=\"preview\" src=\"{$image['image']}\" alt=\"{$lang->ficons_no_preview}\">", array("class" => "align_center"));
