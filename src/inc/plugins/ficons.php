@@ -146,13 +146,29 @@ function ficons_action(&$actions) {
 }
 
 function ficons_show(&$forum) {
-    global $db, $templates, $forum_url, $mybb;
+    global $templates, $forum_url, $mybb;
     
     if($mybb->settings['ficons_visible'] == 1) {
-        $forum_icons = $db->simple_select("forum_icons", "image", "fid={$forum['fid']}");
-        $forum_icon = $db->fetch_field($forum_icons, "image");
+        $forum_icon = ficons_get_icon($forum['fid']);
         if(!empty($forum_icon)) {
             eval("\$forum['icon'] = \"".$templates->get("forum_icons")."\";");
         }
+    }
+}
+
+function ficons_get_icon($fid) {
+    global $db;
+    static $cache = null;
+    if (is_null($cache)) {
+        $query = $db->simple_select('forum_icons', 'fid, image');
+        $cache = [];
+        while ($ficon = $db->fetch_array($query)) {
+            $cache[$ficon['fid']] = $ficon['image'];
+        }
+    }
+    if (isset($cache[$fid])) {
+        return $cache[$fid];
+    } else {
+        return '';
     }
 }
