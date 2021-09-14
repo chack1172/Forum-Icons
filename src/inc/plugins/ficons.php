@@ -18,7 +18,7 @@ function ficons_info() {
         "website" => "",
         "author" => "chack1172",
         "authorsite" => "http://chack1172.altervista.org/",
-        "version" => "4.6",
+        "version" => "5.0",
         "compatibility" => "18*",
         "codename" => "ficons"
     );
