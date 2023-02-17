@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('IN_MYBB')) {
-	die('This file cannot be accessed directly.');
+    die('This file cannot be accessed directly.');
 }
 
 if(defined('IN_ADMINCP')) {
@@ -29,14 +29,14 @@ function ficons_install() {
     
     $collation = $db->build_create_table_collation();
 
-	if(!$db->table_exists("forum_icons")) {
-		$db->write_query("CREATE TABLE `".TABLE_PREFIX."forum_icons` (
-			`id` int(10) UNSIGNED NOT NULL auto_increment,
-			`fid` int(10) UNSIGNED NOT NULL,
+    if(!$db->table_exists("forum_icons")) {
+        $db->write_query("CREATE TABLE `".TABLE_PREFIX."forum_icons` (
+            `id` int(10) UNSIGNED NOT NULL auto_increment,
+            `fid` int(10) UNSIGNED NOT NULL,
             `image` varchar(500) NOT NULL default '',
-			PRIMARY KEY  (`id`)
-		) ENGINE=MyISAM{$collation}");
-	}
+            PRIMARY KEY  (`id`)
+        ) ENGINE=MyISAM{$collation}");
+    }
     
     $template = '<img src="{$forum_icon}" alt="" style="float: left; max-width: 200px; max-height: 150px;padding-right: 10px">';
 
@@ -147,7 +147,8 @@ function ficons_action(&$actions) {
 
 function ficons_show(&$forum) {
     global $templates, $forum_url, $mybb;
-    
+
+    $forum['icon'] = "";
     if($mybb->settings['ficons_visible'] == 1) {
         $forum_icon = ficons_get_icon($forum['fid']);
         if(!empty($forum_icon)) {

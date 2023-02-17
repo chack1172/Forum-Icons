@@ -1,7 +1,7 @@
 <?php
 
 if(!defined("IN_MYBB"))
-	die("Direct initialization of this file is not allowed.");
+    die("Direct initialization of this file is not allowed.");
 
 $lang->load("forum_icons");
 
@@ -14,12 +14,12 @@ if(isset($_POST['save_images']) && !empty($mybb->input['image']) && is_array($my
             elseif(!empty($image))
                 $db->insert_query("forum_icons", array("fid" => $fid, "image" => $image));
         }
-        
+
         log_admin_action($lang->ficons_log);
 
         flash_message($lang->ficons_saved, 'success');
         admin_redirect("index.php?module=forum-icons");
-    } 
+    }
     else {
         flash_message($lang->ficons_not_installed, 'error');
         admin_redirect("index.php?module=forum-icons");
@@ -57,9 +57,9 @@ build_forums_list($form_container);
 $submit_options = array();
 
 if($form_container->num_rows() == 0){
-	$form_container->output_cell($lang->ficons_no_forum, array('colspan' => 3));
-	$form_container->construct_row();
-	$submit_options = array('disabled' => true);
+    $form_container->output_cell($lang->ficons_no_forum, array('colspan' => 3));
+    $form_container->construct_row();
+    $submit_options = array('disabled' => true);
 }
 
 $form_container->end();
@@ -75,40 +75,42 @@ $page->output_footer();
 
 function build_forums_list($form_container, $pid=0, $depth=1) {
     global $mybb, $lang, $db, $sub_forums, $form;
-	static $forums_by_parent;
-    
+    static $forums_by_parent;
+
     if(!is_array($forums_by_parent)) {
-		$forum_cache = cache_forums();
+        $forum_cache = cache_forums();
 
-		foreach($forum_cache as $forum)
-			$forums_by_parent[$forum['pid']][$forum['disporder']][$forum['fid']] = $forum;
-	}
+        foreach($forum_cache as $forum)
+            $forums_by_parent[$forum['pid']][$forum['disporder']][$forum['fid']] = $forum;
+    }
 
-	if(!is_array($forums_by_parent[$pid]))
-		return;
+    if(!is_array($forums_by_parent[$pid]))
+        return;
 
-	foreach($forums_by_parent[$pid] as $children) {
-		foreach($children as $forum) {
-			$image = $db->simple_select("forum_icons", "*", "fid={$forum['fid']}");
+    foreach($forums_by_parent[$pid] as $children) {
+        foreach($children as $forum) {
+            $image = $db->simple_select("forum_icons", "*", "fid={$forum['fid']}");
             $image = $db->fetch_array($image);
-			$forum['name'] = preg_replace("#&(?!\#[0-9]+;)#si", "&amp;", $forum['name']);
+            $forum['name'] = preg_replace("#&(?!\#[0-9]+;)#si", "&amp;", $forum['name']);
 
-			if($forum['type'] == "c" && $depth == 1) {
-				$form_container->output_cell("<div style=\"padding-left: ".(40*($depth-1))."px;\"><strong>{$forum['name']}</strong></div>", array("colspan" => "3", "style" => "height:33px"));
+            if($forum['type'] == "c" && $depth == 1) {
+                $form_container->output_cell("<div style=\"padding-left: ".(40*($depth-1))."px;\"><strong>{$forum['name']}</strong></div>", array("colspan" => "3", "style" => "height:33px"));
                 $form_container->construct_row();
 
-				if($forums_by_parent[$forum['fid']])
-					build_forums_list($form_container, $forum['fid'], $depth+1);
-			}
-			else {
+                if($forums_by_parent[$forum['fid']])
+                    build_forums_list($form_container, $forum['fid'], $depth+1);
+            }
+            else {
+                $image['image'] = isset($image['image']) ? $image['image'] : "";
+
                 $form_container->output_cell("<div style=\"padding-left: ".(40*($depth-1))."px;\">{$forum['name']}</div>");
                 $form_container->output_cell($form->generate_text_box("image[{$forum['fid']}]", $image['image'], array("class" => "imageurl")), array("class" => "align_center"));
                 $form_container->output_cell("<img class=\"preview\" src=\"{$image['image']}\" alt=\"{$lang->ficons_no_preview}\">", array("class" => "align_center"));
                 $form_container->construct_row();
-                
+
                 if(isset($forums_by_parent[$forum['fid']]))
-					build_forums_list($form_container, $forum['fid'], $depth+1);
-			}
-		}
-	}
+                    build_forums_list($form_container, $forum['fid'], $depth+1);
+            }
+        }
+    }
 }
