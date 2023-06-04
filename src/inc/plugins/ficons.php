@@ -8,6 +8,7 @@ if(defined('IN_ADMINCP')) {
     $plugins->add_hook("admin_forum_menu", "ficons_sub_menu");
     $plugins->add_hook("admin_forum_action_handler", "ficons_action");
 } else {
+	$plugins->add_hook("global_start", "ficons_templates");
     $plugins->add_hook("build_forumbits_forum", "ficons_show");
 }
 
@@ -187,6 +188,20 @@ function ficons_update_cache($values = null)
 	$cache->update('forum_icons', $values);
 
 	return $values;
+}
+
+function ficons_templates()
+{
+	global $templatelist;
+
+	if (defined('THIS_SCRIPT') && in_array(THIS_SCRIPT, ['index.php', 'forumdisplay.php'])) {
+		if(isset($templatelist)) {
+			$templatelist .= ',';
+		} else {
+			$templatelist = '';
+		}
+		$templatelist .= 'forum_icons';
+	}
 }
 
 function reload_forum_icons()

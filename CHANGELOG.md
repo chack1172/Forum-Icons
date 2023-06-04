@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added changelog file
+- Added template to templatelist to load
 
 ### Changed
 - Use MyBB datacache to store icons instead of a static variable.
