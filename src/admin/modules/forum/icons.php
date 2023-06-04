@@ -14,7 +14,9 @@ if(isset($_POST['save_images']) && !empty($mybb->input['image']) && is_array($my
             elseif(!empty($image))
                 $db->insert_query("forum_icons", array("fid" => $fid, "image" => $image));
         }
-        
+
+		ficons_update_cache();
+
         log_admin_action($lang->ficons_log);
 
         flash_message($lang->ficons_saved, 'success');

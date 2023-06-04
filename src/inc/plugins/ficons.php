@@ -25,8 +25,8 @@ function ficons_info() {
 }
 
 function ficons_install() {
-    global $db, $mybb;
-    
+    global $db;
+
     $collation = $db->build_create_table_collation();
 
 	if(!$db->table_exists("forum_icons")) {
@@ -77,8 +77,11 @@ function ficons_install() {
 
         $db->insert_query('settings', $setting);
     }
-    
+
     rebuild_settings();
+
+	// Create datacache entry
+	ficons_update_cache([]);
 }
 
 function ficons_is_installed() {
@@ -157,18 +160,34 @@ function ficons_show(&$forum) {
 }
 
 function ficons_get_icon($fid) {
-    global $db;
-    static $cache = null;
-    if (is_null($cache)) {
-        $query = $db->simple_select('forum_icons', 'fid, image');
-        $cache = [];
-        while ($ficon = $db->fetch_array($query)) {
-            $cache[$ficon['fid']] = $ficon['image'];
-        }
+    global $cache;
+	$iconsCache = $cache->read('forum_icons');
+    if (!is_array($iconsCache)) {
+        $iconsCache = ficons_update_cache();
     }
-    if (isset($cache[$fid])) {
-        return $cache[$fid];
+    if (isset($iconsCache[$fid])) {
+        return $iconsCache[$fid];
     } else {
         return '';
     }
+}
+
+function ficons_update_cache($values = null)
+{
+	global $cache, $db;
+	if ($values === null) {
+		$query = $db->simple_select('forum_icons', 'fid, image');
+		$values = [];
+		while ($ficon = $db->fetch_array($query)) {
+            $values[$ficon['fid']] = $ficon['image'];
+        }
+	}
+	$cache->update('forum_icons', $values);
+
+	return $values;
+}
+
+function reload_forum_icons()
+{
+	ficons_update_cache();
 }
