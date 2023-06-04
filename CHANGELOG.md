@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Use MyBB datacache to store icons instead of a static variable.
+- Removed check for forum_icons table existance on admin page
 
 ### Fixed
 - Nothing

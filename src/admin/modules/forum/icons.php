@@ -6,26 +6,20 @@ if(!defined("IN_MYBB"))
 $lang->load("forum_icons");
 
 if(isset($_POST['save_images']) && !empty($mybb->input['image']) && is_array($mybb->input['image'])) {
-    if($db->table_exists("forum_icons")) {
-        foreach($mybb->input['image'] as $fid => $image) {
-            $image = htmlspecialchars($db->escape_string($image));
-            if($db->num_rows($db->simple_select("forum_icons", "*", "fid='{$fid}'")) > 0)
-                $db->update_query("forum_icons", array("image" => $image), "fid={$fid}");
-            elseif(!empty($image))
-                $db->insert_query("forum_icons", array("fid" => $fid, "image" => $image));
-        }
-
-		ficons_update_cache();
-
-        log_admin_action($lang->ficons_log);
-
-        flash_message($lang->ficons_saved, 'success');
-        admin_redirect("index.php?module=forum-icons");
+    foreach($mybb->input['image'] as $fid => $image) {
+        $image = htmlspecialchars($db->escape_string($image));
+        if($db->num_rows($db->simple_select("forum_icons", "*", "fid='{$fid}'")) > 0)
+            $db->update_query("forum_icons", array("image" => $image), "fid={$fid}");
+        elseif(!empty($image))
+            $db->insert_query("forum_icons", array("fid" => $fid, "image" => $image));
     }
-    else {
-        flash_message($lang->ficons_not_installed, 'error');
-        admin_redirect("index.php?module=forum-icons");
-    }
+
+    ficons_update_cache();
+
+    log_admin_action($lang->ficons_log);
+
+    flash_message($lang->ficons_saved, 'success');
+    admin_redirect("index.php?module=forum-icons");
 }
 
 $page->add_breadcrumb_item($lang->ficons_title, "index.php?module=forum-icons");
