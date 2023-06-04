@@ -37,7 +37,7 @@ function ficons_install() {
 			PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM{$collation}");
 	}
-    
+
     $template = '<img src="{$forum_icon}" alt="" style="float: left; max-width: 200px; max-height: 150px;padding-right: 10px">';
 
     $insert_array = array(
@@ -49,7 +49,7 @@ function ficons_install() {
     );
 
     $db->insert_query('templates', $insert_array);
-    
+
     $setting_group = array(
         'name' => 'ficons',
         'title' => 'Forum Icons Settings',
@@ -59,7 +59,7 @@ function ficons_install() {
     );
 
     $gid = $db->insert_query("settinggroups", $setting_group);
-    
+
     $setting_array = array(
         'ficons_visible' => array(
             'title' => 'Show icons?',
@@ -69,8 +69,8 @@ function ficons_install() {
             'disporder' => 1
         ),
     );
-    
-    
+
+
     foreach($setting_array as $name => $setting) {
         $setting['name'] = $name;
         $setting['gid'] = $gid;
@@ -83,7 +83,7 @@ function ficons_install() {
 
 function ficons_is_installed() {
     global $db;
-    
+
     return $db->table_exists("forum_icons");
 }
 
@@ -92,7 +92,7 @@ function ficons_uninstall() {
 
     $db->drop_table("forum_icons");
     $db->delete_query("templates", "title = 'forum_icons'");
-    
+
     $db->delete_query('settings', "name = 'ficons_visible'");
     $db->delete_query('settinggroups', "name = 'ficons'");
 
@@ -101,9 +101,9 @@ function ficons_uninstall() {
 
 function ficons_activate() {
     global $mybb;
-    
+
     require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
-    
+
     find_replace_templatesets(
         "forumbit_depth2_forum",
         "#" . preg_quote('{$forum[\'name\']}') . "#i",
@@ -119,7 +119,7 @@ function ficons_activate() {
 
 function ficons_deactivate() {
     require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
-    
+
     find_replace_templatesets(
         "forumbit_depth2_forum",
         "#" . preg_quote('{$forum[\'icon\']}') . "#i",
@@ -135,10 +135,10 @@ function ficons_deactivate() {
 
 function ficons_sub_menu(&$sub_menu) {
     global $lang;
-    
+
     $lang->load("forum_icons");
-    
-    $sub_menu[] = array("id" => "icons", "title" => $lang->ficons_title, "link" => "index.php?module=forum-icons");   
+
+    $sub_menu[] = array("id" => "icons", "title" => $lang->ficons_title, "link" => "index.php?module=forum-icons");
 }
 
 function ficons_action(&$actions) {
@@ -147,7 +147,7 @@ function ficons_action(&$actions) {
 
 function ficons_show(&$forum) {
     global $templates, $forum_url, $mybb;
-    
+
     if($mybb->settings['ficons_visible'] == 1) {
         $forum_icon = ficons_get_icon($forum['fid']);
         if(!empty($forum_icon)) {

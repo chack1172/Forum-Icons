@@ -19,7 +19,7 @@ if(isset($_POST['save_images']) && !empty($mybb->input['image']) && is_array($my
 
         flash_message($lang->ficons_saved, 'success');
         admin_redirect("index.php?module=forum-icons");
-    } 
+    }
     else {
         flash_message($lang->ficons_not_installed, 'error');
         admin_redirect("index.php?module=forum-icons");
@@ -76,7 +76,7 @@ $page->output_footer();
 function build_forums_list($form_container, $pid=0, $depth=1) {
     global $mybb, $lang, $db, $sub_forums, $form;
 	static $forums_by_parent;
-    
+
     if(!is_array($forums_by_parent)) {
 		$forum_cache = cache_forums();
 
@@ -105,7 +105,7 @@ function build_forums_list($form_container, $pid=0, $depth=1) {
                 $form_container->output_cell($form->generate_text_box("image[{$forum['fid']}]", $image['image'], array("class" => "imageurl")), array("class" => "align_center"));
                 $form_container->output_cell("<img class=\"preview\" src=\"{$image['image']}\" alt=\"{$lang->ficons_no_preview}\">", array("class" => "align_center"));
                 $form_container->construct_row();
-                
+
                 if(isset($forums_by_parent[$forum['fid']]))
 					build_forums_list($form_container, $forum['fid'], $depth+1);
 			}
