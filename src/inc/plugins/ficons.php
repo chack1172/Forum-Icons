@@ -91,7 +91,7 @@ function ficons_is_installed() {
 }
 
 function ficons_uninstall() {
-    global $db;
+    global $db, $cache;
 
     $db->drop_table("forum_icons");
     $db->delete_query("templates", "title = 'forum_icons'");
@@ -100,6 +100,8 @@ function ficons_uninstall() {
     $db->delete_query('settinggroups', "name = 'ficons'");
 
     rebuild_settings();
+
+    $cache->delete('forum_icons');
 }
 
 function ficons_activate() {
