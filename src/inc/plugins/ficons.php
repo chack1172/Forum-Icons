@@ -15,7 +15,7 @@ if(defined('IN_ADMINCP')) {
 function ficons_info() {
     return array(
         "name" => "Forum Icons",
-        "description" => "Add images to all forums",
+        "description" => "Add unique icons to each forum",
         "website" => "",
         "author" => "chack1172",
         "authorsite" => "http://chack1172.altervista.org/",
