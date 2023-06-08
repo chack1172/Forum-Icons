@@ -48,6 +48,14 @@ $form_container->output_row_header($lang->ficons_forum, array("style" => "width:
 $form_container->output_row_header($lang->ficons_image, array("style" => "width: 25%", "class" => "align_center"));
 $form_container->output_row_header($lang->ficons_preview, array("style" => "width: 25%", "class" => "align_center"));
 
+
+
+$icons = [];
+$query = $db->simple_select("forum_icons", "*");
+while ($icon = $db->fetch_array($query)) {
+	$icons[$icon['fid']] = $icon;
+}
+
 build_forums_list($form_container);
 
 $submit_options = array();
@@ -70,7 +78,7 @@ $form->end();
 $page->output_footer();
 
 function build_forums_list($form_container, $pid=0, $depth=1) {
-    global $mybb, $lang, $db, $sub_forums, $form;
+    global $mybb, $lang, $db, $sub_forums, $form, $icons;
 	static $forums_by_parent;
 
     if(!is_array($forums_by_parent)) {
@@ -85,8 +93,12 @@ function build_forums_list($form_container, $pid=0, $depth=1) {
 
 	foreach($forums_by_parent[$pid] as $children) {
 		foreach($children as $forum) {
-			$image = $db->simple_select("forum_icons", "*", "fid={$forum['fid']}");
-            $image = $db->fetch_array($image);
+			if (isset($icons[$forum['fid']])) {
+				$image = $icons[$forum['fid']];
+			} else {
+				$image = ['image' => ''];
+			}
+
 			$forum['name'] = preg_replace("#&(?!\#[0-9]+;)#si", "&amp;", $forum['name']);
 
 			if($forum['type'] == "c" && $depth == 1) {
