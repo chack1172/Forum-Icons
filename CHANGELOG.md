@@ -13,4 +13,4 @@ All notable changes to this project will be documented in this file.
 - Reduced queries on ACP forum icons list page
 
 ### Fixed
-- Nothing
+- PHP warnings

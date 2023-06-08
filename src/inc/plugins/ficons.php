@@ -154,6 +154,7 @@ function ficons_action(&$actions) {
 function ficons_show(&$forum) {
     global $templates, $forum_url, $mybb;
 
+	$forum['icon'] = '';
     if($mybb->settings['ficons_visible'] == 1) {
         $forum_icon = ficons_get_icon($forum['fid']);
         if(!empty($forum_icon)) {
