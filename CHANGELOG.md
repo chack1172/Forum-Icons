@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [5.1] - 2023-06-08
 
 ### Added
 - Added changelog file
